@@ -99,6 +99,8 @@ def main(args):
         for obj in reader:
             exp_model.explain(obj["Review"], os.path.join(args.output_dir,f'example_{idx}'))
             idx+=1
+            print (f"Example {idx} done")
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

@@ -5,7 +5,7 @@
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:1
 #SBATCH --time=8:00:00
-#SBATCH --mem=40GB
+#SBATCH --mem=100GB
 #SBATCH --mail-user=u1471195@umail.utah.edu
 #SBATCH --mail-type=FAIL,END
 #SBATCH -o assignment_3-%j

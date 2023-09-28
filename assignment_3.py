@@ -85,7 +85,8 @@ class ExplainableTransformerPipeline():
 def main(args):
     tokenizer = AutoTokenizer.from_pretrained(args.model_checkpoint) 
     model = AutoModelForSequenceClassification.from_pretrained(args.model_checkpoint, num_labels=args.num_labels)
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    #device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cpu')
 
     clf = transformers.pipeline("text-classification", 
                                 model=model, 

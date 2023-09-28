@@ -65,7 +65,7 @@ class ExplainableTransformerPipeline():
         
         attributes, delta = lig.attribute(inputs=inputs,
                                   baselines=baseline,
-                                  n_steps= 50,
+                                  n_steps= 20,
                                   target = self.__pipeline.model.config.label2id[prediction[0]['label']], 
                                   return_convergence_delta = True)
         # Give a path to save

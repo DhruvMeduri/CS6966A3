@@ -46,8 +46,8 @@ class ExplainableTransformerPipeline():
         
         attr = attr_sum / torch.norm(attr_sum)
         
-        a = pd.Series(attr.numpy()[0][::-1], 
-                         index = self.__pipeline.tokenizer.convert_ids_to_tokens(inputs.detach().numpy()[0])[::-1])
+        a = pd.Series(attr.cpu().numpy()[0][::-1], 
+                         index = self.__pipeline.tokenizer.convert_ids_to_tokens(inputs.detach().cpu().numpy()[0])[::-1])
         
         a.plot.barh(figsize=(10,20))
         plt.savefig(outfile_path)
@@ -85,8 +85,7 @@ class ExplainableTransformerPipeline():
 def main(args):
     tokenizer = AutoTokenizer.from_pretrained(args.model_checkpoint) 
     model = AutoModelForSequenceClassification.from_pretrained(args.model_checkpoint, num_labels=args.num_labels)
-    #device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    device = torch.device('cpu')
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     clf = transformers.pipeline("text-classification", 
                                 model=model, 

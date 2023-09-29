@@ -6,6 +6,7 @@ https://gist.githubusercontent.com/theDestI/fe9ea0d89386cf00a12e60dd346f2109/raw
 
 import torch
 import pandas as pd
+import numpy as np
 
 from torch import tensor 
 import transformers
@@ -49,9 +50,18 @@ class ExplainableTransformerPipeline():
         a = pd.Series(attr.cpu().numpy()[0][::-1], 
                          index = self.__pipeline.tokenizer.convert_ids_to_tokens(inputs.detach().cpu().numpy()[0])[::-1])
         
-        a.plot.barh(figsize=(10,20))
-        plt.savefig(outfile_path)
-                      
+ 
+        print(a)
+        
+        for i in range(0,len(a),25):
+
+            top = min(i+25,len(a))
+            temp = a[i:top]
+            fig = temp.plot.barh()
+            plt.savefig(outfile_path + str(i))
+            plt.clf()
+
+
     def explain(self, text: str, outfile_path: str):
         """
             Main entry method. Passes text through series of transformations and through the model. 
@@ -98,7 +108,9 @@ def main(args):
     idx=0
     with jsonlines.open(args.a1_analysis_file, 'r') as reader:
         for obj in reader:
-            exp_model.explain(obj["Review"], os.path.join(args.output_dir,f'example_{idx}'))
+            if not os.path.exists(os.path.join(args.output_dir,f'example_{idx}')):
+                os.mkdir(os.path.join(args.output_dir,f'example_{idx}'))
+            exp_model.explain(obj["Review"], os.path.join(args.output_dir,f'example_{idx}/'))
             idx+=1
             print (f"Example {idx} done")
 
